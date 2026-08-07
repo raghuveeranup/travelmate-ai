@@ -15,67 +15,70 @@ index = faiss.read_index("index/travel_index.faiss")
 with open("index/chunks.json", "r", encoding="utf-8") as file:
     chunks = json.load(file)
 
-question = "what park can i visit in Tokyo?"
 
-#Create embedding for the question
+def ask_travelmate(question):
+    # Create embedding for the question
+    response = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=question
+    )
 
-response = client.embeddings.create(
-    model="text-embedding-3-small",
-    input=question
-)
+    query_vector = np.array([response.data[0].embedding]).astype("float32")
 
-query_vector = np.array([response.data[0].embedding]).astype("float32")
+    # Search the index for the most similar chunks
+    distances, indices = index.search(query_vector, k=5)
 
-#search the index for the most similar chunks
+    context = ""
+    for idx in indices[0]:
+        context += chunks[idx]
+        context += "\n\n"
 
-distances, indices = index.search(query_vector, k=5)
+    prompt = f"""
+    You are a TravelMate AI.
 
-context = ""
-for idx in indices[0]:
-    context += chunks[idx]
-    context += "\n\n"
+    Answer the user's question using ONLY
+    the information provided in the context.
 
-prompt = f"""
-You are a TravelMate AI.
+    If the answer cannot be found in the context,
+    say:
+    'I could not find that information in the travel guide.'
 
-Answer the user's question using ONLY
-the information provided in the context.
+    Context: {context}
 
-If the answer cannot be found in the context,
-say:
-'I could not find that information in the travel guide.'
+    Question: {question}
+    """
 
-Context: {context}
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }])
 
-Question: {question}
-"""
+    sources = []
 
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-        {
-            "role": "user",
-            "content": prompt
-        }])
+    for idx in indices[0]:
+        sources.append(chunks[idx])
 
-print("Question:")
-print(question)
-print()
+    print()
 
-print("Answer:")
-print(response.choices[0].message.content)
+    return response.choices[0].message.content, sources
 
-sources = []
 
-for idx in indices[0]:
-    sources.append(chunks[idx])
 
-print()
-print("Sources:")
-print("-" * 50)
+while True:
 
-for source in sources:
-    print(source)
+    question = input("\nAsk TravelMate: ")
+
+    if question.lower() in ["exit", "quit"]:
+        print("Thank you for using TravelMate. Goodbye!")
+        break
+
+    answer, sources = ask_travelmate(question)
+    print("Answer:")
+    print(answer)
     print("-" * 50)  # Separator for readability
-
-    
+    print("sources:")
+    for source in sources:
+        print(source)
