@@ -1,3 +1,4 @@
 openai
 python-dotnev
 faiss-cpu
+streamlit

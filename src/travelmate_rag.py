@@ -66,19 +66,20 @@ def ask_travelmate(question):
     return response.choices[0].message.content, sources
 
 
+if __name__ == "__main__":
 
-while True:
+    while True:
 
-    question = input("\nAsk TravelMate: ")
+        question = input("\nAsk TravelMate: ")
 
-    if question.lower() in ["exit", "quit"]:
-        print("Thank you for using TravelMate. Goodbye!")
-        break
+        if question.lower() in ["exit", "quit"]:
+            print("Thank you for using TravelMate. Goodbye!")
+            break
 
-    answer, sources = ask_travelmate(question)
-    print("Answer:")
-    print(answer)
-    print("-" * 50)  # Separator for readability
-    print("sources:")
-    for source in sources:
-        print(source)
+        answer, sources = ask_travelmate(question)
+        print("Answer:")
+        print(answer)
+        print("-" * 50)  # Separator for readability
+        print("sources:")
+        for source in sources:
+            print(source)
