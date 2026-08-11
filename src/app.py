@@ -14,4 +14,4 @@ if question:
 
     st.subheader("Sources:")
     for source in sources:
-        st.write(source)
+        st.markdown(f"📍 {source['city']} \n\n 📄 {source['source']}")
