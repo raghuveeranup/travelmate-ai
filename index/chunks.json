@@ -1,7 +1,77 @@
 [
-  "Tsukiji outer market is one of Tokyo's most famous seafood destinations. Visitors can enjoy fresh sushi and seafood dishes.",
-  "Ameyoko Market is known for its lively street food scene, local snacks, and shopping stalls.",
-  "Shinjuku is one of tokyo's most popular nightlife districts, offering bars, restaurnats ad entertainement venues.",
-  "senso-ji temple is a historic buddhist temple located in Asakusa and is one of Tokyo's most visited cultural attractions.",
-  "ueno park is famous for museums, cherry blossoms, and open green spaces."
+  {
+    "city": "paris",
+    "source": "paris.txt",
+    "text": "The Eiffel tower is one of pari's most famous landmarks and offers great view of the city."
+  },
+  {
+    "city": "paris",
+    "source": "paris.txt",
+    "text": "The Louvre Museum houses thousands of works of art, including the Mona Lisa."
+  },
+  {
+    "city": "paris",
+    "source": "paris.txt",
+    "text": "Montmarte is known for its artistic history, charming streets, and cafes."
+  },
+  {
+    "city": "paris",
+    "source": "paris.txt",
+    "text": "The seine River is popular for sightseeing cruises and scenic walks."
+  },
+  {
+    "city": "paris",
+    "source": "paris.txt",
+    "text": "French Gastronomy is famouse for Renowned bakeries, artisanal pastries (croissants, macarons), and fine dining with Michelin stars."
+  },
+  {
+    "city": "tokyo",
+    "source": "tokyo.txt",
+    "text": "Tsukiji outer market is one of Tokyo's most famous seafood destinations. Visitors can enjoy fresh sushi and seafood dishes."
+  },
+  {
+    "city": "tokyo",
+    "source": "tokyo.txt",
+    "text": "Ameyoko Market is known for its lively street food scene, local snacks, and shopping stalls."
+  },
+  {
+    "city": "tokyo",
+    "source": "tokyo.txt",
+    "text": "Shinjuku is one of tokyo's most popular nightlife districts, offering bars, restaurnats ad entertainement venues."
+  },
+  {
+    "city": "tokyo",
+    "source": "tokyo.txt",
+    "text": "senso-ji temple is a historic buddhist temple located in Asakusa and is one of Tokyo's most visited cultural attractions."
+  },
+  {
+    "city": "tokyo",
+    "source": "tokyo.txt",
+    "text": "ueno park is famous for museums, cherry blossoms, and open green spaces."
+  },
+  {
+    "city": "sydney",
+    "source": "sydney.txt",
+    "text": "The Sydney Opera house is one of Australia's most iconic landmarks."
+  },
+  {
+    "city": "sydney",
+    "source": "sydney.txt",
+    "text": "Bondi beach is famous for surfing, coastal walks, and ocean views."
+  },
+  {
+    "city": "sydney",
+    "source": "sydney.txt",
+    "text": "Darling Harbour offers restaurants attractions, and waterfront entertainement."
+  },
+  {
+    "city": "sydney",
+    "source": "sydney.txt",
+    "text": "Taronga zoo provides wildlife experiences with views of Sydney Harbour."
+  },
+  {
+    "city": "sydney",
+    "source": "sydney.txt",
+    "text": "The Royal botanic garden is a popular greenspace near the city centre."
+  }
 ]

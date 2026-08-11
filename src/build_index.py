@@ -8,39 +8,50 @@ import json
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-#Load document 
-with open("data/tokyo.txt", "r", encoding="utf-8") as file:
-    content = file.read()
+all_chunks = []
+embeddings = []
 
-    # Split by double newlines for paragraphs
-    chunks = content.split("\n\n")  
+for filename in os.listdir("data"):
+    if not filename.endswith(".txt"):
+        continue
 
-    #generate embeddings for each chunk
-    embeddings = []
-    for chunk in chunks:
-        response = client.embeddings.create(
-            model="text-embedding-3-small",
-            input=chunk
-        )
-        embedding = response.data[0].embedding
-        embeddings.append(embedding)
+    city = filename.replace(".txt", "")
 
-        #convert embeddings to numpy array
+    with open(f"data/{filename}", "r", encoding="utf-8") as file:
+        content = file.read()
+        chunks = content.split("\n\n")  # Split by double newlines for paragraphs
 
-        vectors = np.array(embeddings).astype("float32")
+        for chunk in chunks:
 
-        #create a FAISS index
-        dimension = len(vectors[0])
-        index = faiss.IndexFlatL2(dimension)
+            all_chunks.append({
+                "city": city,
+                "source": filename,
+                "text": chunk
+            })
+print(f"Total chunks created: {len(all_chunks)}")
 
-        #add vectors to the index
-        index.add(vectors)
+for chunk in all_chunks:
+    response = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=chunk["text"]
+    )
+    embedding = response.data[0].embedding
+    embeddings.append(embedding)
+    #convert embeddings to numpy array
+    vectors = np.array(embeddings).astype("float32")
+    #create a FAISS index
+    dimension = len(vectors[0])
+    index = faiss.IndexFlatL2(dimension)
+
+    #add vectors to the index
+    index.add(vectors)
 
     print(f"Number of vectors stored: {index.ntotal}")
 
     faiss.write_index(index, "index/travel_index.faiss")
     print("Index created successfully!")
- 
+
 with open("index/chunks.json", "w", encoding="utf-8") as file:
-    json.dump(chunks, file, ensure_ascii=False, indent=2)
+    json.dump(all_chunks, file, ensure_ascii=False, indent=2)
     print("Chunks saved to chunks.json successfully!")
+    

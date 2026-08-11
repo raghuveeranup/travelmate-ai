@@ -26,11 +26,11 @@ def ask_travelmate(question):
     query_vector = np.array([response.data[0].embedding]).astype("float32")
 
     # Search the index for the most similar chunks
-    distances, indices = index.search(query_vector, k=5)
+    distances, indices = index.search(query_vector, k=7)
 
     context = ""
     for idx in indices[0]:
-        context += chunks[idx]
+        context += chunks[idx]["text"]
         context += "\n\n"
 
     prompt = f"""
@@ -59,7 +59,10 @@ def ask_travelmate(question):
     sources = []
 
     for idx in indices[0]:
-        sources.append(chunks[idx])
+        sources.append({
+            "city": chunks[idx]["city"],
+            "source": chunks[idx]["source"]
+        })
 
     print()
 
