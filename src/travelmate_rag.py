@@ -34,8 +34,10 @@ def ask_travelmate(question):
         context += "\n\n"
 
     prompt = f"""
-    You are a TravelMate AI.
+    You are a TravelMate AI, a friendly travel advisor.
 
+    Provide concise, practical travel recommendations.
+    
     Answer the user's question using ONLY
     the information provided in the context.
 
