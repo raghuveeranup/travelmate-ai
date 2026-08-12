@@ -46,10 +46,7 @@ for chunk in all_chunks:
     #add vectors to the index
     index.add(vectors)
 
-    print(f"Number of vectors stored: {index.ntotal}")
-
     faiss.write_index(index, "index/travel_index.faiss")
-    print("Index created successfully!")
 
 with open("index/chunks.json", "w", encoding="utf-8") as file:
     json.dump(all_chunks, file, ensure_ascii=False, indent=2)

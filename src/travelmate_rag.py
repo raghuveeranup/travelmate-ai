@@ -16,7 +16,7 @@ with open("index/chunks.json", "r", encoding="utf-8") as file:
     chunks = json.load(file)
 
 
-def ask_travelmate(question):
+def ask_travelmate(question, chat_history):
     # Create embedding for the question
     response = client.embeddings.create(
         model="text-embedding-3-small",
@@ -33,6 +33,14 @@ def ask_travelmate(question):
         context += chunks[idx]["text"]
         context += "\n\n"
 
+    conversation_context = ""
+    if chat_history:
+        for message in chat_history[-3:]:
+            conversation_context += (f"User: {message['question']}\n")
+            conversation_context += (f"Assistant: {message['answer']}\n")
+
+    print(conversation_context)
+
     prompt = f"""
     You are a TravelMate AI, a friendly travel advisor.
 
@@ -44,6 +52,8 @@ def ask_travelmate(question):
     If the answer cannot be found in the context,
     say:
     'I could not find that information in the travel guide.'
+
+    conversation History: {conversation_context}
 
     Context: {context}
 
