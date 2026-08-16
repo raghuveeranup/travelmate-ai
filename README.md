@@ -1,4 +1,4 @@
-This proejct aims at learning and applying below AI Engineering concepts
+📍 This Project aims at learning and applying below AI Engineering concepts
 
 ✅ Embeddings
 ✅ Vector Search
@@ -8,11 +8,22 @@ This proejct aims at learning and applying below AI Engineering concepts
 ✅ Metadata
 ✅ Prompt Engineering
 ✅ Hallucination Prevention
-✅ Conversational Retrieval
 ✅ RAG
+✅ Streamlit UI
 
+📍 Architecture 
 
-Responsibilitites
+Travel Guides -> Chunking -> Embeddings -> FAISS
+
+User Question -> Conversation-Aware Retrieval -> Context -> GPT -> Answer
+
+📍 Features:
+✅ Multi-City travel guides
+✅ Conversation RAG
+✅ Metadata-aware retrieval
+✅ Source attribution
+
+📍 Responsibilitites
 
 app.py
 ✅ Streamlit UI
@@ -34,3 +45,7 @@ retrieval.py
 
 prompts.py
 ✅ Prompt Templates
+
+📍 How to Run
+pip install -r requirements.py
+streamlit run src/app.py
