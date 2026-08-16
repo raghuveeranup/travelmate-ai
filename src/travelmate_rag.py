@@ -1,5 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
+from prompts import TRAVEL_ADVISOR_PROMPT
+from retrieval import retrieve_context
 import os
 import faiss
 import numpy as np
@@ -17,48 +19,21 @@ with open("index/chunks.json", "r", encoding="utf-8") as file:
 
 
 def ask_travelmate(question, chat_history):
-    # Create embedding for the question
-    response = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=question
-    )
-
-    query_vector = np.array([response.data[0].embedding]).astype("float32")
-
-    # Search the index for the most similar chunks
-    distances, indices = index.search(query_vector, k=7)
-
-    context = ""
-    for idx in indices[0]:
-        context += chunks[idx]["text"]
-        context += "\n\n"
 
     conversation_context = ""
+
     if chat_history:
         for message in chat_history[-3:]:
             conversation_context += (f"User: {message['question']}\n")
             conversation_context += (f"Assistant: {message['answer']}\n")
 
-    print(conversation_context)
+    context, unique_sources = retrieve_context(client, index, chunks, question, k=5)
 
-    prompt = f"""
-    You are a TravelMate AI, a friendly travel advisor.
-
-    Provide concise, practical travel recommendations.
-    
-    Answer the user's question using ONLY
-    the information provided in the context.
-
-    If the answer cannot be found in the context,
-    say:
-    'I could not find that information in the travel guide.'
-
-    conversation History: {conversation_context}
-
-    Context: {context}
-
-    Question: {question}
-    """
+    prompt = TRAVEL_ADVISOR_PROMPT.format(
+        conversation_context=conversation_context,
+        context=context,
+        question=question
+    )
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -68,17 +43,7 @@ def ask_travelmate(question, chat_history):
                 "content": prompt
             }])
 
-    sources = []
-
-    for idx in indices[0]:
-        sources.append({
-            "city": chunks[idx]["city"],
-            "source": chunks[idx]["source"]
-        })
-
-    print()
-
-    return response.choices[0].message.content, sources
+    return response.choices[0].message.content, unique_sources
 
 
 if __name__ == "__main__":
